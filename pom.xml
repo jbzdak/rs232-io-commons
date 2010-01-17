@@ -6,6 +6,7 @@
 
    <groupId>twoParametric</groupId>
    <artifactId>main</artifactId>
+   <packaging>pom</packaging>
    <version>1.0</version>
 
    <build>
@@ -23,6 +24,10 @@
          </plugins>
       </pluginManagement>
    </build>
+   <modules>
+      <module>api</module>
+      <module>plumbing</module>
+   </modules>
    <repositories>
       <repository>
          <id>skimble-public</id>
