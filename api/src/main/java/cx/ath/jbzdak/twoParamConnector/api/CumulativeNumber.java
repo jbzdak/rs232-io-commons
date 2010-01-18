@@ -1,4 +1,4 @@
-package cx.ath.jbzdak.twoParamConnector.api.twoParamConnector;
+package cx.ath.jbzdak.twoParamConnector.api;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
