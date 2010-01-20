@@ -15,9 +15,18 @@ public class NewLineReader implements ResponseReader{
 
    private static final Logger LOGGER = LoggerFactory.getLogger(NewLineReader.class);
 
-   byte eolChar;
+   private final byte eolChar;
 
-   public InputStream inputStream;
+   private InputStream inputStream;
+
+   public NewLineReader(byte eolChar) {
+      this.eolChar = eolChar;
+   }
+
+   @Override
+   public void setInput(InputStream input) {
+      inputStream = input;
+   }
 
    public void dispose() {
       try{

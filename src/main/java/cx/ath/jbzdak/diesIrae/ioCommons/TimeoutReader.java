@@ -11,11 +11,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: 2009-10-27
  */
-public class SimpleInputBuffer implements ResponseReader{
+public class TimeoutReader implements ResponseReader{
 
    private final int bufferLen;
 
-   private final InputStream in;
+   private InputStream in;
 
    private final ReentrantLock bufferLock = new ReentrantLock();
 
@@ -27,11 +27,23 @@ public class SimpleInputBuffer implements ResponseReader{
 
    private volatile boolean watchForInput;
 
-   public SimpleInputBuffer(int bufferLen, InputStream in) {
+   public TimeoutReader(int bufferLen) {
       this.bufferLen = bufferLen;
-      this.in = in;
-      buffer = ByteBuffer.allocate(bufferLen);
-      bufferFillingThread.start();
+   }
+
+   @Override
+   public void setInput(InputStream input) {
+      try {
+         bufferLock.lock();
+         if(in!=null){
+            throw new UnsupportedOperationException("Can't set inputStream twice, and this object already has input set");
+         }
+         in = input;
+         buffer = ByteBuffer.allocate(bufferLen);
+         bufferFillingThread.start();
+      } finally {
+         bufferLock.unlock();
+      }
    }
 
    void setWatchForInput(boolean watchForInput) {

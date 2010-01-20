@@ -1,8 +1,5 @@
 package cx.ath.jbzdak.diesIrae.ioCommons;
 
-import cx.ath.jbzdak.diesIrae.ioCommons.enums.Parity;
-import cx.ath.jbzdak.diesIrae.ioCommons.enums.PortState;
-import cx.ath.jbzdak.diesIrae.ioCommons.enums.StopBits;
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
@@ -14,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.util.EnumSet;
 import java.util.Properties;
 
 public class Port {
@@ -39,8 +37,21 @@ public class Port {
          int baudRate = Integer.parseInt(properties.getProperty("baudRate"));
          int dataBits = Integer.parseInt(properties.getProperty("dataBits"));
          StopBits stopBits = StopBits.valueOf(properties.getProperty("stopBits"));
-         Parity parity = Parity.valueOf(properties.getProperty("parity"));
-         return new Port(portName, baudRate, dataBits, stopBits, parity);
+         String parityStr = properties.getProperty("parity");
+         Parity parity;
+         if(parityStr!=null){
+            parity = Parity.valueOf(parityStr);
+         }else{
+            parity = Parity.NONE;
+         }
+         String modesStr = properties.getProperty("modes");
+         EnumSet<PortMode> modes = EnumSet.noneOf(PortMode.class);
+         if(modesStr!=null){
+            for(String mode : modesStr.split(",")){
+               modes.add(PortMode.valueOf(mode.trim()));
+            }
+         }
+         return new Port(portName, baudRate, dataBits, stopBits, parity, modes);
       } catch (IllegalArgumentException e) {
          throw new PortException(e);
       }
@@ -50,15 +61,15 @@ public class Port {
       return makeDriver(properties.getProperty("portName"), properties);
    }
 
-   public Port(String identifier, int baudRate, int dataBits, StopBits stopBits, Parity parity) {
-      this(makeIdentifier(identifier), baudRate, dataBits, stopBits, parity);
+   public Port(String identifier, int baudRate, int dataBits, StopBits stopBits, Parity parity, EnumSet<PortMode> modes) {
+      this(makeIdentifier(identifier), baudRate, dataBits, stopBits, parity, modes);
    }
 
-   public Port(CommPortIdentifier identifier, int baudRate, int dataBits, StopBits stopBits, Parity parity) {
-      this(identifier, baudRate, dataBits, stopBits.getContents(), parity.getContents());
+   public Port(CommPortIdentifier identifier, int baudRate, int dataBits, StopBits stopBits, Parity parity, EnumSet<PortMode> modes) {
+      this(identifier, baudRate, dataBits, stopBits.getContents(), parity.getContents(), modes);
    }
 
-   private Port(CommPortIdentifier identifier, int baudRate, int dataBits, int stopBits, int parity) {
+   private Port(CommPortIdentifier identifier, int baudRate, int dataBits, int stopBits, int parity, EnumSet<PortMode> modes) {
       super();
       this.identifier = identifier;
       if (identifier == null) {
@@ -77,7 +88,11 @@ public class Port {
             throw new IllegalPortStateException(
                     "Nieobsługiwany typ portu! - nie jest to port szeregowy");
          }
+
          port = (SerialPort) commPort;
+         for (PortMode mode : modes) {
+            mode.setMode(port);
+         }
          port.setSerialPortParams(baudRate, dataBits, stopBits, parity);
          in = port.getInputStream();
          out = port.getOutputStream();

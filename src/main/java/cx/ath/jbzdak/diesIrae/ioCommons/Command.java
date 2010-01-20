@@ -11,7 +11,7 @@ public abstract class Command {
       this.timeout = timeout;
    }
 
-   abstract byte[] getCommand();
+   public abstract byte[] getCommand();
 
    public boolean isRecievesInput() {
       return recievesInput;
