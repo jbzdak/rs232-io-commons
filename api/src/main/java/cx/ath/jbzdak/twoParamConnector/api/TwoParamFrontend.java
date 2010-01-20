@@ -11,15 +11,13 @@ import java.util.concurrent.TimeUnit;
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 16, 2010
  */
-public interface TwoParamFrontend<Tag extends Comparable> {
+public interface TwoParamFrontend<Tag extends Comparable> extends DetectorFrontend<Matrix<CumulativeInteger>>{
 
    /**
     * Czy pobiera dane.
     * @return
     */
    boolean isAcquiring();
-
-   Matrix<CumulativeInteger> getCurrentResults();
 
    /**
     * Startuje akwizycję a pomiary taguje jako tag.
@@ -44,14 +42,5 @@ public interface TwoParamFrontend<Tag extends Comparable> {
     * @return czas akwizycji
     */
    long getAcquisitionTime(TimeUnit timeUnit);
-
-   /**
-    * Czas co który generowany jest event o zmianie wyników.
-    * @param time czas
-    * @param timeUnit timeUnit
-    */
-   void setRefreshTime(long time, TimeUnit timeUnit);
-
-   long getRefreshTime(TimeUnit timeUnit);
    
 }

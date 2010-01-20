@@ -11,5 +11,17 @@
 
    <artifactId>plumbing</artifactId>
 
+   <dependencies>
+      <dependency>
+         <groupId>twoParametric</groupId>
+         <artifactId>api</artifactId>
+         <version>1.0</version>
+      </dependency>
+      <dependency>
+         <groupId>diesIoCommons</groupId>
+         <artifactId>diesIoCommons</artifactId>
+         <version>1.0</version>
+      </dependency>
+   </dependencies>
 
 </project>

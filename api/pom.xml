@@ -11,5 +11,13 @@
 
    <artifactId>api</artifactId>
 
+   <dependencies>
+      <dependency>
+         <groupId>cx.ath.jbzdak.spectrometric</groupId>
+         <artifactId>spectrometricApi</artifactId>
+         <version>1.0</version>
+      </dependency>
+   </dependencies>
+
 
 </project>

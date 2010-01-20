@@ -5,7 +5,7 @@ package cx.ath.jbzdak.twoParamConnector.api;
  *         Date: Jan 16, 2010
  */
 @net.jcip.annotations.NotThreadSafe
-public class CumulativeInteger extends CumulativeNumber{
+public class CumulativeInteger extends CumulativeNumber<CumulativeInteger>{
 
    volatile int contents;
 
@@ -34,7 +34,17 @@ public class CumulativeInteger extends CumulativeNumber{
    }
 
    @Override
-   void add(Number number) {
+   public void add(Number number) {
       contents += number.intValue();
+   }
+
+   @Override
+   public CumulativeInteger copy() {
+      return new CumulativeInteger(contents);
+   }
+
+   @Override
+   public void substract(Number number) {
+      contents -= number.intValue();
    }
 }

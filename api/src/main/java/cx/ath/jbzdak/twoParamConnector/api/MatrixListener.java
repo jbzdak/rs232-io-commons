@@ -7,4 +7,5 @@ package cx.ath.jbzdak.twoParamConnector.api;
 public interface MatrixListener<T extends Number> {
 
    void valueChanged(int i, int j, T oldVal, T newVal);
+   
 }
