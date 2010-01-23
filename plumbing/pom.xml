@@ -22,6 +22,11 @@
          <artifactId>diesIoCommons</artifactId>
          <version>1.0</version>
       </dependency>
+      <dependency>
+         <groupId>cx.ath.jbzdak.spectrometric</groupId>
+         <artifactId>util</artifactId>
+         <version>1.0</version>
+      </dependency>
    </dependencies>
 
 </project>

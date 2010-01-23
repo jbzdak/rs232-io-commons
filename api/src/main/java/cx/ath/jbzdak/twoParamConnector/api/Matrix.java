@@ -6,12 +6,16 @@ package cx.ath.jbzdak.twoParamConnector.api;
  */
 public interface Matrix<T extends  Number> {
 
-   T get(int i, int j);
+   int getRows();
+
+   int getCols();
+
+   T get(int row, int col);
 
    /**
     *
      * @return old value
      */
-   T set(int i, int j, T newValue);
+   T set(int row, int col, T newValue);
    
 }

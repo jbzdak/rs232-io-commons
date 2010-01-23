@@ -1,6 +1,7 @@
-package cx.ath.jbzdak.twoParamConnector.plumbing.telnet;
+package cx.ath.jbzdak.twoParamConnector.plumbing;
 
 import cx.ath.jbzdak.twoParamConnector.api.DetectorFrontend;
+import cx.ath.jbzdak.twoParamConnector.plumbing.telnet.TwoParametricDriver;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -9,6 +10,8 @@ import cx.ath.jbzdak.twoParamConnector.api.DetectorFrontend;
 public interface InternalDetectorFrontend<DATA> extends DetectorFrontend<DATA>{
 
    void setDriver(TwoParametricDriver driver);
+
+   void start();
 
    void dispose();
 

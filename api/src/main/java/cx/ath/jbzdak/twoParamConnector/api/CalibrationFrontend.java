@@ -1,6 +1,7 @@
 package cx.ath.jbzdak.twoParamConnector.api;
 
 import cx.ath.jbzdak.spectrometric.api.SpectrometricResult;
+import cx.ath.jbzdak.twoParamConnector.api.enums.Detector;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -8,6 +9,6 @@ import cx.ath.jbzdak.spectrometric.api.SpectrometricResult;
  */
 public interface CalibrationFrontend extends DetectorFrontend<SpectrometricResult>{
 
-   int getDetectorNumber();
+   Detector getDetector();
 
 }

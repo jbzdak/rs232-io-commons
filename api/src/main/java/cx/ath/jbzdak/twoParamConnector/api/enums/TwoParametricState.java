@@ -5,5 +5,5 @@ package cx.ath.jbzdak.twoParamConnector.api.enums;
  *         Date: Jan 18, 2010
  */
 public enum TwoParametricState {
-   CALIBRATE_FIRST_CHANNEL, CALIBRATE_SECOND_CHANNEL, COINCIDENCE, NO_STATE;
+   CALIBRATE_BETA_CHANNEL, CALIBRATE_GAMMA_CHANNEL, COINCIDENCE, NO_STATE;
 }

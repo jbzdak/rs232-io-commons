@@ -17,6 +17,11 @@
          <artifactId>spectrometricApi</artifactId>
          <version>1.0</version>
       </dependency>
+      <dependency>
+         <groupId>cx.ath.jbzdak.spectrometric</groupId>
+         <artifactId>math</artifactId>
+         <version>1.0</version>
+      </dependency>
    </dependencies>
 
 

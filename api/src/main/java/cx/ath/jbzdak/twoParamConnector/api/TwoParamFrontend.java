@@ -6,7 +6,9 @@ import java.util.concurrent.TimeUnit;
  * Frontend do dwuparametrycznego systemu made by P. Wacławik.
  *
  * Tag ma pozwalać na odróżnienie/dodawanie/usuwanie poszczególnych akwizycji
- * z wykresu dwuparametrycznego. 
+ * z wykresu dwuparametrycznego.
+ *
+ * In returened matrix i corresponds to results from GAMMA detector, and j from BETA detector
  *
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 16, 2010
