@@ -28,7 +28,7 @@ public abstract class ImplementationFrontend {
 
    public abstract Configuration getConfiguration();
 
-   public static ImplementationFrontend createFrontend(){
+   public static ImplementationFrontend getFrontend(){
       try {
          return frontend;
       } catch (Exception e){

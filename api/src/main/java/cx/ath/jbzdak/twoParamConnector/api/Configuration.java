@@ -18,4 +18,8 @@ public interface Configuration {
 
    void setCurrentCalibration(LinearFun newCalibration, Detector detector);
 
+   int getFirstChannel();
+
+   int getLastChannel();
+
 }

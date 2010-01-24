@@ -27,6 +27,7 @@
    <modules>
       <module>api</module>
       <module>plumbing</module>
+      <module>frontendSimple</module>
    </modules>
    <repositories>
       <repository>

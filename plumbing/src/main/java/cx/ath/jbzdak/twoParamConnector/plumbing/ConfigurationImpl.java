@@ -1,12 +1,12 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 import cx.ath.jbzdak.twoParamConnector.api.Configuration;
 import cx.ath.jbzdak.twoParamConnector.api.ImplementationFrontend;
 import cx.ath.jbzdak.twoParamConnector.api.LinearFun;
 import cx.ath.jbzdak.twoParamConnector.api.enums.Detector;
-
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -15,7 +15,7 @@ import java.util.TreeMap;
 public class ConfigurationImpl implements Configuration{
 
    public static ConfigurationImpl get(){
-      return (ConfigurationImpl) ImplementationFrontend.createFrontend().getConfiguration();
+      return (ConfigurationImpl) ImplementationFrontend.getFrontend().getConfiguration();
    }
 
    String portName;
@@ -64,5 +64,13 @@ public class ConfigurationImpl implements Configuration{
 
    public void setPortName(String portName) {
       this.portName = portName;
+   }
+
+   public int getFirstChannel() {
+      return firstChannel;
+   }
+
+   public int getLastChannel() {
+      return lastChannel;
    }
 }
