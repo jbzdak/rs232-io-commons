@@ -11,4 +11,6 @@ public interface CalibrationFrontend extends DetectorFrontend<SpectrometricResul
 
    Detector getDetector();
 
+   void clearData();
+
 }

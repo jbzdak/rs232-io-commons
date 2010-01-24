@@ -1,5 +1,6 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing.telnet;
 
+import cx.ath.jbzdak.common.PropertyChangeSupport;
 import cx.ath.jbzdak.diesIrae.ioCommons.*;
 
 import java.io.IOException;
@@ -11,6 +12,8 @@ import java.util.concurrent.TimeUnit;
  *         Date: Jan 18, 2010
  */
 public class TwoParametricDriver {
+
+
 
    public static final Command QUERY_CALIBRATION = new QueryCalibration();
 
@@ -24,9 +27,14 @@ public class TwoParametricDriver {
 
    public static final Command SET_CALIBRATE_SECOND_MODE = new SetModeCommand(2);
 
+   private final PropertyChangeSupport support = new PropertyChangeSupport(this);
+
    final Port port;
 
    final CommandDriver simpleCommandDriver;
+
+   private boolean portResponsive;
+
 
    public TwoParametricDriver() {
       try {
@@ -39,17 +47,32 @@ public class TwoParametricDriver {
       }
    }
 
-   public Integer executeCommand(Command command) throws IOException, InterruptedException {
-      String result = simpleCommandDriver.executeCommand(command);
-      if(result==null){
-         return null;
-      }else{
-         return Integer.parseInt(result);
+   public Integer executeCommand(Command command){
+      try {
+         String result = simpleCommandDriver.executeCommand(command);
+         setPortResponsive(true);
+         if(result==null){
+            return null;
+         }else{
+            return Integer.parseInt(result);
+         }
+      } catch (Exception e){
+         setPortResponsive(false);
+         return null; 
       }
    }
 
+   public boolean isPortResponsive() {
+      return portResponsive;
+   }
 
+   void setPortResponsive(boolean portResponsive) {
+      boolean oldPortResponsive = this.portResponsive;
+      this.portResponsive = portResponsive;
+      support.firePropertyChange("portResponsive", oldPortResponsive, this.portResponsive);
+   }
 
-
-
+   public void dispose() {
+      port.dispose();
+   }
 }

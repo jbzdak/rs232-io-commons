@@ -18,13 +18,17 @@ public class ConfigurationImpl implements Configuration{
       return (ConfigurationImpl) ImplementationFrontend.createFrontend().getConfiguration();
    }
 
-   public String portName;
+   String portName;
 
-   public Map<Detector, LinearFun> currentCalibration = new TreeMap<Detector, LinearFun>();
+   public final Map<Detector, LinearFun> currentCalibration = new TreeMap<Detector, LinearFun>();
 
-   public Map<Detector, LinearFun> defaultCalibration = new TreeMap<Detector, LinearFun>();
+   public final  Map<Detector, LinearFun> defaultCalibration = new TreeMap<Detector, LinearFun>();
 
-   public int firstChannel, lastChannel;   
+   public final int firstChannel, lastChannel;
+
+   public final Map<Detector, Integer> typeToNumberMap = new TreeMap<Detector, Integer>();
+
+   public final int resultsRefreshTime;
 
    public ConfigurationImpl() {
       ConfigFilesConfiguration files = new ConfigFilesConfiguration();
@@ -34,7 +38,9 @@ public class ConfigurationImpl implements Configuration{
       currentCalibration.putAll(defaultCalibration);
       firstChannel = Integer.parseInt(files.detectorsProperties.getProperty("firstChannelNo"));
       lastChannel = Integer.parseInt(files.detectorsProperties.getProperty("lastChannelNo"));
-      
+      typeToNumberMap.put(Detector.BETA, Integer.parseInt(files.detectorsProperties.getProperty(Detector.BETA.name())));
+      typeToNumberMap.put(Detector.GAMMA, Integer.parseInt(files.detectorsProperties.getProperty(Detector.GAMMA.name())));
+      resultsRefreshTime = Integer.parseInt(files.detectorsProperties.getProperty("resultsRefreshTime"));
    }
 
    @Override

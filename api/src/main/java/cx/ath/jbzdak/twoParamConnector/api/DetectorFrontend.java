@@ -9,5 +9,11 @@ public interface DetectorFrontend<DATA> {
    DATA getData();
 
    void addFrontendListener(FrontendListener<DATA> frontendListener);
+
+   public void start();
+
+   public void stop();
+
+   public boolean isAcquiring();
    
 }

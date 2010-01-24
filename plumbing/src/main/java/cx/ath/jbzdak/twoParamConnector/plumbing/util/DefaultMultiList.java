@@ -2,7 +2,6 @@ package cx.ath.jbzdak.twoParamConnector.plumbing.util;
 
 import cx.ath.jbzdak.twoParamConnector.api.Cumulative;
 
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -11,13 +10,13 @@ import java.util.List;
  */
 public class DefaultMultiList<E extends Cumulative<? super E, E>, Tag extends Comparable> extends MultiList<E, Tag>{
 
-   final Class<? extends List<E>> listClazz;
+   final Class<? extends List> listClazz;
 
-   final Method createZeroElementMethod;
+   final Factory<E> factory;
 
-   public DefaultMultiList(int listSize, Method createZeroElementMethod, Class<? extends List<E>> listClazz) {
+   public DefaultMultiList(int listSize, Factory<E> factory, Class<? extends List> listClazz) {
       super(listSize);
-      this.createZeroElementMethod = createZeroElementMethod;
+      this.factory = factory;
       this.listClazz = listClazz;
    }
 
@@ -32,7 +31,7 @@ public class DefaultMultiList<E extends Cumulative<? super E, E>, Tag extends Co
             observable = new WrappedObservableList<E>(result);
          }
          for(int ii=0; ii < listSize; ii++){
-            result.add((E)createZeroElementMethod.invoke(null));
+            result.add(factory.make());
          }
          return observable;
       } catch (Exception e){

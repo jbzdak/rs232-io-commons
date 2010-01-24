@@ -47,4 +47,9 @@ public class CumulativeInteger extends CumulativeNumber<CumulativeInteger>{
    public void substract(Number number) {
       contents -= number.intValue();
    }
+
+   @Override
+   public void increment() {
+      contents++;
+   }
 }

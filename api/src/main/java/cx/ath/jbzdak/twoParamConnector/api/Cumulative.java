@@ -12,5 +12,7 @@ public interface Cumulative<T, THIS_TYPE extends Cumulative<T, THIS_TYPE>> {
    void substract(T number);
 
    THIS_TYPE copy();
+
+   void increment();
    
 }

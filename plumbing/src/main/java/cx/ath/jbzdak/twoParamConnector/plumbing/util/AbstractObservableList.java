@@ -23,6 +23,11 @@ public abstract class AbstractObservableList<E> implements ObservableList<E>{
       return listeners.remove(listListener);
    }
 
+   @Override
+   public void notifyElementChanged(int index) {
+      fireElementChanged(index, null);
+   }
+
    protected void fireElementAdded(int i){
       E e = get(i);
       for(ListListener<E> l: listeners){

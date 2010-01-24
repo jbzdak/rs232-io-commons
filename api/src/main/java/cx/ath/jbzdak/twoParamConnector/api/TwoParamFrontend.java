@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  * Tag ma pozwalać na odróżnienie/dodawanie/usuwanie poszczególnych akwizycji
  * z wykresu dwuparametrycznego.
  *
- * In returened matrix i corresponds to results from GAMMA detector, and j from BETA detector
+ * In returened matrix row corresponds to results from GAMMA detector, and col from BETA detector
  *
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 16, 2010
@@ -26,12 +26,6 @@ public interface TwoParamFrontend<Tag extends Comparable> extends DetectorFronte
     * @param tag tag pomiarów
     *  */
    void startAcquisition(Tag tag);
-
-   /**
-    * Wysyła żądanie zatrzymania akwizycji. Akwizycja będzie zatrzymana po jakimś czasie.
-    * Zatrzymanei akwizycji spowoduje wysłanie odpowieeniego {@link java.beans.PropertyChangeEvent}.  
-    */
-   void stopAcquisition();
 
    /**
     * Kasuje pomiary otagowane tagiem.

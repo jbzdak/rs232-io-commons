@@ -12,4 +12,6 @@ public interface ObservableList<E> extends List<E> {
 
    public boolean removeListListener(ListListener<E> listListener);
 
+   public void notifyElementChanged(int index);
+  
 }

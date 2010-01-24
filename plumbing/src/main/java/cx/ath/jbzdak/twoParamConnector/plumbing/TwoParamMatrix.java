@@ -2,16 +2,16 @@ package cx.ath.jbzdak.twoParamConnector.plumbing;
 
 import cx.ath.jbzdak.twoParamConnector.api.CumulativeNumber;
 import cx.ath.jbzdak.twoParamConnector.api.Matrix;
+import cx.ath.jbzdak.twoParamConnector.plumbing.util.SuperObservableList;
 
 import java.lang.reflect.Array;
-import java.util.AbstractList;
 import java.util.List;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 21, 2010
  */
-public class TwoParamMatrix<T extends CumulativeNumber> extends AbstractList<T> implements Matrix<T>, List<T>{
+public class TwoParamMatrix<T extends CumulativeNumber> extends SuperObservableList<T> implements Matrix<T>, List<T>{
 
    T[][] contents;
 
@@ -57,5 +57,9 @@ public class TwoParamMatrix<T extends CumulativeNumber> extends AbstractList<T> 
    @Override
    public int size() {
       return getRows()*getCols();
+   }
+
+   public void notifyElementChanged(int row, int col){
+      notifyElementChanged(row*getCols()+col);
    }
 }

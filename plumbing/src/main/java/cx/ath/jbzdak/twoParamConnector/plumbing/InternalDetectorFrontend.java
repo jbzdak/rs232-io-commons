@@ -11,8 +11,6 @@ public interface InternalDetectorFrontend<DATA> extends DetectorFrontend<DATA>{
 
    void setDriver(TwoParametricDriver driver);
 
-   void start();
-
    void dispose();
 
 }
