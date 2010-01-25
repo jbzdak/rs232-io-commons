@@ -1,10 +1,10 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing.util;
 
-import cx.ath.jbzdak.twoParamConnector.api.Cumulative;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import cx.ath.jbzdak.twoParamConnector.api.Cumulative;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -22,17 +22,18 @@ public abstract class MultiList<E extends Cumulative<? super E, E>, Tag extends 
     * Creates list that contains {@link cx.ath.jbzdak.twoParamConnector.plumbing.util.MultiList#listSize} zeros.
     * @return created list
     */
-   protected abstract ObservableList<E> createList();
+   protected final Factory<ObservableList> listFactory;
 
-   protected MultiList(int listSize) {
+   protected MultiList(Factory<ObservableList> listFactory, int listSize) {
+      this.listFactory = listFactory;
       this.listSize = listSize;
-      results = createList();
+      results = listFactory.make();
    }
 
    public List<E> getForTag(Tag tag){
       ObservableList<E> list = values.get(tag);
       if(list == null){
-         list = createList();
+         list = listFactory.make();
          list.addListListener(new ListListener(tag));
          values.put(tag, list);
       }

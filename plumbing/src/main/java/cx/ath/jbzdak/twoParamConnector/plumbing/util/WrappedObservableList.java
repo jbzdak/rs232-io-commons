@@ -68,7 +68,7 @@ public class WrappedObservableList<E> extends AbstractObservableList<E>{
    public Iterator<E> iterator() {
       return new Iterator<E>(){
 
-         final Iterator<E> ii = iterator();
+         final Iterator<E> ii = wrapped.iterator();
 
          @Override
          public boolean hasNext() {
