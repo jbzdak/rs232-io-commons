@@ -58,7 +58,10 @@ public class TwoParamMatrix<T extends CumulativeNumber> extends SuperObservableL
 
    @Override
    public T set(int row, int col, T newValue) {
-      return contents[row][col]=newValue;
+      T old = contents[row][col];
+      contents[row][col]=newValue;
+      notifyElementChanged(row, col, old);
+      return old;
    }
 
    @Override
@@ -71,8 +74,8 @@ public class TwoParamMatrix<T extends CumulativeNumber> extends SuperObservableL
       return getRows()*getCols();
    }
 
-   public void notifyElementChanged(int row, int col){
-      notifyElementChanged(toArrayIndex(row, col));
+   public void notifyElementChanged(int row, int col, T oldElement){
+      notifyElementChanged(toArrayIndex(row, col), oldElement);
    }
 
    @Override

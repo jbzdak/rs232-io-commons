@@ -1,5 +1,8 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing.telnet;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
+
 import cx.ath.jbzdak.common.CloseableThread;
 import cx.ath.jbzdak.diesIrae.ioCommons.Command;
 import cx.ath.jbzdak.twoParamConnector.api.CumulativeInteger;
@@ -12,9 +15,6 @@ import cx.ath.jbzdak.twoParamConnector.plumbing.TwoParamMatrix;
 import cx.ath.jbzdak.twoParamConnector.plumbing.util.DefaultMultiList;
 import cx.ath.jbzdak.twoParamConnector.plumbing.util.Factory;
 import cx.ath.jbzdak.twoParamConnector.plumbing.util.MultiList;
-
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -134,8 +134,10 @@ public class TwoParametricFrontendImpl<T extends Comparable>
          Integer row = driver.executeCommand(queryGamma);
          Integer col = driver.executeCommand(queryBeta);
          if(row != null && col != null){
-            currentResults.get(row, col).increment();
-            currentResults.notifyElementChanged(row, col);
+            CumulativeInteger integer = currentResults.get(row, col);
+            CumulativeInteger copy = integer.copy();
+            integer.increment();
+            currentResults.notifyElementChanged(row, col, copy);
          }
          long currTime = System.currentTimeMillis();
          if((currTime - lastUpdate) >= resultsRefreshTime){

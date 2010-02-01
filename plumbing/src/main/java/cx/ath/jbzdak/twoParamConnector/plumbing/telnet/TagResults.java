@@ -16,7 +16,7 @@ public class TagResults {
 
    public void addPoint(int x, int y){
       results.get(x, y).increment();
-      results.notifyElementChanged(x,y);
+      //results.notifyElementChanged(x,y);
    }
 
 

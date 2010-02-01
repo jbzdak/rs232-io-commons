@@ -33,4 +33,16 @@ public class TwoParamMatrixTest {
       Assert.assertEquals(twoParamMatrix.get(1,1).intValue(), 4);
    }
 
+   @Test
+   public void testToArray(){
+      twoParamMatrix.set(0,0, new CumulativeInteger(1));
+      twoParamMatrix.set(0,1, new CumulativeInteger(2));
+      twoParamMatrix.set(1,0, new CumulativeInteger(3));
+      twoParamMatrix.set(1,1, new CumulativeInteger(4));
+
+      Assert.assertEquals(twoParamMatrix.get(0).intValue(), 1);
+      Assert.assertEquals(twoParamMatrix.get(1).intValue(), 2);
+      Assert.assertEquals(twoParamMatrix.get(2).intValue(), 3);
+      Assert.assertEquals(twoParamMatrix.get(3).intValue(), 4);
+   }
 }

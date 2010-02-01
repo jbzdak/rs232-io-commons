@@ -24,8 +24,8 @@ public abstract class AbstractObservableList<E> implements ObservableList<E>{
    }
 
    @Override
-   public void notifyElementChanged(int index) {
-      fireElementChanged(index, null);
+   public void notifyElementChanged(int index, E oldVal) {
+      fireElementChanged(index, oldVal);
    }
 
    protected void fireElementAdded(int i){
