@@ -9,13 +9,13 @@ import java.util.*;
 public abstract class SuperObservableList<E> extends AbstractList<E> implements ObservableList<E>{
 
    public boolean add(E e) {
-      super.add(e);
-      fireElementAdded(size()-1);
-      return true;
+      add(size(), e);
+      return  true;
    }
 
    public void add(int index, E element) {
       super.add(index, element);
+      fireElementAdded(index);
    }
 
    public boolean addAll(Collection<? extends E> c) {

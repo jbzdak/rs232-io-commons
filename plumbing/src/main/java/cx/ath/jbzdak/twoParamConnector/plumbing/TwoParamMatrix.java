@@ -1,11 +1,11 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing;
 
+import java.lang.reflect.Array;
+import java.util.List;
+
 import cx.ath.jbzdak.twoParamConnector.api.CumulativeNumber;
 import cx.ath.jbzdak.twoParamConnector.api.Matrix;
 import cx.ath.jbzdak.twoParamConnector.plumbing.util.SuperObservableList;
-
-import java.lang.reflect.Array;
-import java.util.List;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -27,6 +27,18 @@ public class TwoParamMatrix<T extends CumulativeNumber> extends SuperObservableL
       this.cols = cols;
       this.rows = rows;
       contents = (T[][]) Array.newInstance(clazz, rows, cols);
+   }
+
+   private int toArrayIndex(int row, int col){
+      return row*getCols()+col;
+   }
+
+   private int toRow(int arrayIndex){
+      return arrayIndex/getCols();
+   }
+
+   private int toCol(int arrayIndex){
+      return  arrayIndex%getCols();
    }
 
    @Override
@@ -51,7 +63,7 @@ public class TwoParamMatrix<T extends CumulativeNumber> extends SuperObservableL
 
    @Override
    public T get(int index) {
-      return get(index/getCols(), index%getCols());
+      return get(toRow(index), toCol(index));
    }
 
    @Override
@@ -60,6 +72,11 @@ public class TwoParamMatrix<T extends CumulativeNumber> extends SuperObservableL
    }
 
    public void notifyElementChanged(int row, int col){
-      notifyElementChanged(row*getCols()+col);
+      notifyElementChanged(toArrayIndex(row, col));
+   }
+
+   @Override
+   public T set(int index, T element) {
+      return set(toRow(index), toCol(index), element);
    }
 }
