@@ -52,4 +52,9 @@ public class CumulativeInteger extends CumulativeNumber<CumulativeInteger>{
    public void increment() {
       contents++;
    }
+
+   @Override
+   public void setValue(Number number) {
+      contents = number.intValue();
+   }
 }

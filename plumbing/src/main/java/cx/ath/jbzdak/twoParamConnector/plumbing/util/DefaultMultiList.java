@@ -8,15 +8,22 @@ import cx.ath.jbzdak.twoParamConnector.api.Cumulative;
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 18, 2010
  */
-public class DefaultMultiList<E extends Cumulative<? super E, E>, Tag extends Comparable> extends MultiList<E, Tag>{
+public class DefaultMultiList<E extends Cumulative<E>, Tag extends Comparable> extends MultiList<E, Tag>{
 //
 //   public DefaultMultiList(int listSize, Factory<E> factory, Class<? extends List> listClazz) {
 //      super(new Fact<E>(factory, listClazz, listSize), listSize);
 //   }
 
+
+   public DefaultMultiList(int listSize, Factory<E> factory, Factory<? extends List> listFactory, UpdateStrategy updateStrategy) {
+      super(new Fact<E>(factory, listFactory, listSize), listSize, updateStrategy);
+   }
+
    public DefaultMultiList(int listSize, Factory<E> factory, Factory<? extends List> listFactory) {
       super(new Fact<E>(factory, listFactory, listSize), listSize);
    }
+
+
 
 
 

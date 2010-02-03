@@ -13,10 +13,10 @@ public class RedScale extends ColorPaintScale{
 
    @Override
    public Paint getPaintInternal(double value) {
-      int idx = (int) (value/getUpperBound()*256);
+      int idx = (int) (value/getUpperBound()*255);
       Color col = colors[idx];
       if(col == null){
-         col = new Color(256, 256 - idx, 256 - idx);
+         col = new Color(255, 255 - idx, 255 - idx);
          colors[idx] = col;
       }
       return col;

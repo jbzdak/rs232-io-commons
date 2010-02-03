@@ -1,5 +1,8 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing.telnet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,6 +19,7 @@ import cx.ath.jbzdak.twoParamConnector.plumbing.TwoParamMatrix;
 import cx.ath.jbzdak.twoParamConnector.plumbing.util.DefaultMultiList;
 import cx.ath.jbzdak.twoParamConnector.plumbing.util.Factory;
 import cx.ath.jbzdak.twoParamConnector.plumbing.util.MultiList;
+import cx.ath.jbzdak.twoParamConnector.plumbing.util.UpdateStrategy;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -24,6 +28,8 @@ import cx.ath.jbzdak.twoParamConnector.plumbing.util.MultiList;
 public class TwoParametricFrontendImpl<T extends Comparable>
         extends AbstractFrontend<Matrix<CumulativeInteger>>
         implements TwoParamFrontend<T>, InternalDetectorFrontend<Matrix<CumulativeInteger>> {
+
+   private static final Logger LOGGER = LoggerFactory.getLogger(TwoParametricFrontendImpl.class);
 
    TwoParametricDriver driver;
 
@@ -57,7 +63,7 @@ public class TwoParametricFrontendImpl<T extends Comparable>
          public List make() {
             return new TwoParamMatrix(channelNum, channelNum, CumulativeInteger.class);
          }
-      });
+      }, UpdateStrategy.UPDATE_ON_EVENT);
       queryGamma = getCommandForDetectorId(configuration.typeToNumberMap.get(Detector.GAMMA));
       queryBeta = getCommandForDetectorId(configuration.typeToNumberMap.get(Detector.BETA));
       resultsRefreshTime = configuration.resultsRefreshTime;
@@ -142,14 +148,17 @@ public class TwoParametricFrontendImpl<T extends Comparable>
          Integer col = driver.executeCommand(queryBeta);
          if(row != null && col != null){
             CumulativeInteger integer = currentResults.get(row, col);
-            CumulativeInteger copy = integer.copy();
+            //CumulativeInteger copy = integer.copy();
             integer.increment();
-            currentResults.notifyElementChanged(row, col, copy);
+            //currentResults.notifyElementChanged(row, col, copy);
          }
          long currTime = System.currentTimeMillis();
          if((currTime - lastUpdate) >= resultsRefreshTime){
+            LOGGER.debug("updating result matrix, time from last update: {}",  currTime -lastUpdate );
             lastUpdate = currTime;
+            contents.updateResults();
             fireDataChanged((Matrix<CumulativeInteger>) contents.getResults());
+            LOGGER.debug("Update took {} ms", System.currentTimeMillis() - currTime);
          }
       }
    }

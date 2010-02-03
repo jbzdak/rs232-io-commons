@@ -25,6 +25,12 @@
          <artifactId>api</artifactId>
          <version>1.0</version>
       </dependency>
+      <dependency>
+         <groupId>twoParametric</groupId>
+         <artifactId>plumbing-real</artifactId>
+         <version>1.0</version>
+         <scope>test</scope>
+      </dependency>
    </dependencies>
 
 

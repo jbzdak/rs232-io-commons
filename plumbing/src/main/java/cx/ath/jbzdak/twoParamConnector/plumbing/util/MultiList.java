@@ -10,7 +10,7 @@ import cx.ath.jbzdak.twoParamConnector.api.Cumulative;
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 18, 2010
  */
-public abstract class MultiList<E extends Cumulative<? super E, E>, Tag extends Comparable>{
+public abstract class MultiList<E extends Cumulative<E>, Tag extends Comparable>{
 
    private final Map<Tag, ObservableList<E>> values = new HashMap<Tag, ObservableList<E>>();
 
@@ -18,23 +18,33 @@ public abstract class MultiList<E extends Cumulative<? super E, E>, Tag extends 
 
    protected final int listSize;
 
+   protected final UpdateStrategy strategy;
+
    /**
     * Creates list that contains {@link cx.ath.jbzdak.twoParamConnector.plumbing.util.MultiList#listSize} zeros.
     * @return created list
     */
    protected final Factory<ObservableList> listFactory;
 
-   protected MultiList(Factory<ObservableList> listFactory, int listSize) {
+   protected MultiList(Factory<ObservableList> listFactory, int listSize, UpdateStrategy updateStrategy) {
       this.listFactory = listFactory;
       this.listSize = listSize;
       results = listFactory.make();
+      strategy = updateStrategy;
    }
+
+   protected MultiList(Factory<ObservableList> listFactory, int listSize) {
+      this(listFactory, listSize, UpdateStrategy.UPDATE_ON_EVENT);
+   }
+
 
    public List<E> getForTag(Tag tag){
       ObservableList<E> list = values.get(tag);
       if(list == null){
          list = listFactory.make();
-         list.addListListener(new ListListener(tag));
+         if(strategy == UpdateStrategy.UPDATE_ALWAYS){
+            list.addListListener(new ListListener(tag));
+         }
          values.put(tag, list);
       }
       return list;
@@ -43,16 +53,28 @@ public abstract class MultiList<E extends Cumulative<? super E, E>, Tag extends 
    public boolean removeTag(Tag tag){
       ObservableList<E> list = values.remove(tag);
       if(list==null) return false;
-      for (int ii = 0; ii < list.size(); ii++) {
-         E result = results.get(ii).copy();
-         result.substract(list.get(ii));
-         results.set(ii, result);
+      if(strategy == UpdateStrategy.UPDATE_ALWAYS){
+         for (int ii = 0; ii < list.size(); ii++) {
+            E result = results.get(ii).copy();
+            result.substract(list.get(ii));
+            results.set(ii, result);
+         }
       }
       return true;
    }
 
    public List<E> getResults() {
       return results;
+   }
+
+   public void updateResults(){
+      for (int ii = 0; ii < results.size(); ii++) {
+         E e = results.get(ii);
+         e.setValue(0);
+         for (ObservableList<E> list : values.values()) {
+            e.add(list.get(ii));
+         }
+      }
    }
 
    private class ListListener implements cx.ath.jbzdak.twoParamConnector.plumbing.util.ListListener<E>{

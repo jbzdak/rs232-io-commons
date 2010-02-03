@@ -23,6 +23,6 @@ public class ResourceHolder {
    public String get(String key){
       if(resources.containsKey(key))
          return resources.getString(key);
-      return  resources.getString(key);      
+      return key;    
    }
 }

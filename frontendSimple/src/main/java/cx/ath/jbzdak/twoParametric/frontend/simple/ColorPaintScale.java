@@ -1,5 +1,6 @@
 package cx.ath.jbzdak.twoParametric.frontend.simple;
 
+import org.jfree.chart.event.RendererChangeEvent;
 import org.jfree.chart.renderer.PaintScale;
 import org.jfree.chart.renderer.xy.XYBlockRenderer;
 import org.slf4j.Logger;
@@ -8,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,25 +28,9 @@ public abstract class ColorPaintScale implements PaintScale{
 
    public void installInRenderer(final XYBlockRenderer renderer){
       addOverflowListener(new ActionListener() {
-
-         final Method method;
-         {
-            try {
-               method = XYBlockRenderer.class.getMethod("fireChangeEvent");
-               method.setAccessible(true);
-            } catch (NoSuchMethodException e) {
-               LOGGER.error("Exception while creating ColorPaintScaleListener");
-               throw new RuntimeException(e);
-            }
-         }
-
          @Override
          public void actionPerformed(ActionEvent e) {
-            try {
-               method.invoke(renderer);
-            } catch (Exception e1){
-               LOGGER.warn("Exception while invoking fireChangeEvent on XYBlockRenderer via reflection api", e1);
-            }
+           renderer.notifyListeners(new RendererChangeEvent(this));
          }
       });
    }

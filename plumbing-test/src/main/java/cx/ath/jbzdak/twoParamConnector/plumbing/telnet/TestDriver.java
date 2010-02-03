@@ -55,6 +55,7 @@ public class TestDriver extends TwoParametricDriver {
 
    @Override
    public Integer executeCommand(Command command) {
+
       String commandStr = Charset.forName("ASCII").decode(ByteBuffer.wrap(command.getCommand())).toString().trim();
       if(commandStr.startsWith("!")){
          if(state != TPDState.NO_STATE){
