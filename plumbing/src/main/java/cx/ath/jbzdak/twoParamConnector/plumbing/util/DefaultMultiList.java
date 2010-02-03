@@ -9,16 +9,16 @@ import cx.ath.jbzdak.twoParamConnector.api.Cumulative;
  *         Date: Jan 18, 2010
  */
 public class DefaultMultiList<E extends Cumulative<? super E, E>, Tag extends Comparable> extends MultiList<E, Tag>{
-
-   public DefaultMultiList(int listSize, Factory<E> factory, Class<? extends List> listClazz) {
-      super(new Fact<E>(factory, listClazz, listSize), listSize);
-   }
+//
+//   public DefaultMultiList(int listSize, Factory<E> factory, Class<? extends List> listClazz) {
+//      super(new Fact<E>(factory, listClazz, listSize), listSize);
+//   }
 
    public DefaultMultiList(int listSize, Factory<E> factory, Factory<? extends List> listFactory) {
-       super(new Fact<E>(factory, listFactory, listSize), listSize);
+      super(new Fact<E>(factory, listFactory, listSize), listSize);
    }
 
-   
+
 
    private static class Fact<E> implements Factory<ObservableList>{
       final Factory<? extends List> listFactory;
@@ -33,27 +33,27 @@ public class DefaultMultiList<E extends Cumulative<? super E, E>, Tag extends Co
          this.listSize = listSize;
       }
 
-      private Fact(Factory<E> factory, final Class<? extends List> listClazz, int listSize) {
-         this.factory = factory;
-         this.listFactory = new Factory<List>() {
-            @Override
-            public List make() {
-               try {
-                  List<E> result = listClazz.newInstance();
-                  ObservableList<E> observable;
-                  if (result instanceof ObservableList) {
-                     observable = (ObservableList<E>) result;
-                  }else{
-                     observable = new WrappedObservableList<E>(result);
-                  }
-                  return observable;
-               } catch (Exception e){
-                  throw new RuntimeException();
-               }
-            }
-         };
-         this.listSize = listSize;
-      }
+//      private Fact(Factory<E> factory, final Class<? extends List> listClazz, int listSize) {
+//         this.factory = factory;
+//         this.listFactory = new Factory<List>() {
+//            @Override
+//            public List make() {
+//               try {
+//                  List<E> result = listClazz.newInstance();
+//                  ObservableList<E> observable;
+//                  if (result instanceof ObservableList) {
+//                     observable = (ObservableList<E>) result;
+//                  }else{
+//                     observable = new WrappedObservableList<E>(result);
+//                  }
+//                  return observable;
+//               } catch (Exception e){
+//                  throw new RuntimeException();
+//               }
+//            }
+//         };
+//         this.listSize = listSize;
+//      }
 
       @Override
       public ObservableList make() {
@@ -62,7 +62,13 @@ public class DefaultMultiList<E extends Cumulative<? super E, E>, Tag extends Co
             for(int ii=0; ii < listSize; ii++){
                result.set(ii, factory.make());
             }
-            return (ObservableList) result;
+            ObservableList<E> observable;
+            if (result instanceof ObservableList) {
+               observable = (ObservableList<E>) result;
+            }else{
+               observable = new WrappedObservableList<E>(result);
+            }
+            return observable;
          } catch (Exception e){
             throw new RuntimeException(e);
          }

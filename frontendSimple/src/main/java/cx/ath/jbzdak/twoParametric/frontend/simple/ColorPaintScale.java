@@ -24,7 +24,7 @@ public abstract class ColorPaintScale implements PaintScale{
 
    List<ActionListener> overflowListeners = new ArrayList<ActionListener>();
 
-   double lastUpperBound;
+   double lastUpperBound = 0;
 
    public void installInRenderer(final XYBlockRenderer renderer){
       addOverflowListener(new ActionListener() {
@@ -64,7 +64,7 @@ public abstract class ColorPaintScale implements PaintScale{
    @Override
    public Paint getPaint(double value) {
       if(value> lastUpperBound){
-         lastUpperBound = value;
+         lastUpperBound = Math.round(value*1.1)+1;
          fireOverflow();
       }
       return getPaintInternal(value);

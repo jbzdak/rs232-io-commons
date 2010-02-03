@@ -1,5 +1,6 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing.telnet;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -24,7 +25,7 @@ public class TwoParametricFrontendImpl<T extends Comparable>
         extends AbstractFrontend<Matrix<CumulativeInteger>>
         implements TwoParamFrontend<T>, InternalDetectorFrontend<Matrix<CumulativeInteger>> {
 
-   TwoParametricDriver driver = new TwoParametricDriver();
+   TwoParametricDriver driver;
 
    final MultiList<CumulativeInteger, T> contents;
 
@@ -44,13 +45,19 @@ public class TwoParametricFrontendImpl<T extends Comparable>
 
    public TwoParametricFrontendImpl() {
       ConfigurationImpl configuration = ConfigurationImpl.get();
-      int channelNum = configuration.lastChannel - configuration.firstChannel;
-      contents = new DefaultMultiList<CumulativeInteger,T>(channelNum, new Factory<CumulativeInteger>() {
+      final int channelNum = configuration.lastChannel - configuration.firstChannel;
+      int matrixSize = channelNum*channelNum;
+      contents = new DefaultMultiList<CumulativeInteger,T>(matrixSize, new Factory<CumulativeInteger>() {
          @Override
          public CumulativeInteger make() {
             return new CumulativeInteger(0);
          }
-      }, TwoParamMatrix.class);
+      }, new Factory<List>() {
+         @Override
+         public List make() {
+            return new TwoParamMatrix(channelNum, channelNum, CumulativeInteger.class);
+         }
+      });
       queryGamma = getCommandForDetectorId(configuration.typeToNumberMap.get(Detector.GAMMA));
       queryBeta = getCommandForDetectorId(configuration.typeToNumberMap.get(Detector.BETA));
       resultsRefreshTime = configuration.resultsRefreshTime;
@@ -96,7 +103,7 @@ public class TwoParametricFrontendImpl<T extends Comparable>
          startStopLock.lock();
          currentResults = (TwoParamMatrix<CumulativeInteger>) contents.getForTag(t);
          dataRequestThread = new DataRequestThread();
-         dataRequestThread.run();
+         dataRequestThread.start();
          setAcquiring(true);
       } finally {
          startStopLock.unlock();

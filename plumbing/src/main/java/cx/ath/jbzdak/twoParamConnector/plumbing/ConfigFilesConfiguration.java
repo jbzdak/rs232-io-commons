@@ -23,6 +23,7 @@ public class ConfigFilesConfiguration {
 
    public ConfigFilesConfiguration() {
       loadPortProperties();
+      loadDetectorsProperties();
    }
 
    void loadDetectorsProperties(){
@@ -34,7 +35,7 @@ public class ConfigFilesConfiguration {
       }
       Properties user = new Properties(def);
       try {
-         user.load(new FileInputStream(new File(".\\.config", "twoParametricDetectors.properties")));
+         user.load(new FileInputStream(new File(new File(".", ".config"), "twoParametricDetectors.properties")));
       } catch (IOException e) {
          LOGGER.info("Couldnt load user port propertiesFile, creating defaults",e);
          createDefaultDetectorProperties(def);
@@ -51,7 +52,7 @@ public class ConfigFilesConfiguration {
       }
       Properties user = new Properties(def);
       try {
-         user.load(new FileInputStream(new File(".\\.config", "twoParametricPort.properties")));
+         user.load(new FileInputStream(new File("."+File.separator+".config", "twoParametricPort.properties")));
       } catch (IOException e) {
          LOGGER.info("Couldnt load user port propertiesFile, creating defaults",e);
          createDefaultPortProperties(def);

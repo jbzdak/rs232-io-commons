@@ -44,10 +44,7 @@ public class TwoParametricPanel extends JPanel{
       ChartMaker maker = new ChartMaker();
       chartPanel = maker.panel;
       add(chartPanel, BorderLayout.CENTER);
-
    }
-
-
 
    private class ChartMaker{
 

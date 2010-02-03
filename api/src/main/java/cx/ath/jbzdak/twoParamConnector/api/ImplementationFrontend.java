@@ -18,7 +18,7 @@ public abstract class ImplementationFrontend {
          tmp = (ImplementationFrontend)
                     Class.forName("cx.ath.jbzdak.twoParamConnector.api.ImplementationFrontendImpl").newInstance();
       } catch (Exception e){
-         LOGGER.error("Cant create ImplementationFrontend instance. Two parametric driwer will not work.");
+         LOGGER.error("Cant create ImplementationFrontend instance. Two parametric driwer will not work.",e);
          tmp=null;
       }
       frontend = tmp;

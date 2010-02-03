@@ -24,7 +24,16 @@ public class MultiListTest {
          public CumulativeInteger make() {
             return new CumulativeInteger(0);
          }
-      }, ArrayList.class);
+      }, new Factory<List>() {
+         @Override
+         public List make() {
+            ArrayList result = new ArrayList();
+            for(int ii=0; ii < 5; ii++){
+               result.add(null);
+            }
+            return result;
+         }
+      });
    }
    
    void fillList(int num, CumulativeInteger number, List<CumulativeInteger> list){

@@ -1,6 +1,7 @@
 package cx.ath.jbzdak.twoParamConnector.plumbing;
 
 import java.util.Map;
+import java.util.Properties;
 import java.util.TreeMap;
 
 import cx.ath.jbzdak.twoParamConnector.api.Configuration;
@@ -30,8 +31,11 @@ public class ConfigurationImpl implements Configuration{
 
    public final int resultsRefreshTime;
 
+   public final Properties driverPropertes;
+
    public ConfigurationImpl() {
       ConfigFilesConfiguration files = new ConfigFilesConfiguration();
+      driverPropertes = files.portProperties;
       portName = files.portProperties.getProperty("portName");
       defaultCalibration.put(Detector.BETA, LinearFun.parseFromHumanFormat(files.detectorsProperties.getProperty("defaultCalibration.channelBeta")));
       defaultCalibration.put(Detector.GAMMA, LinearFun.parseFromHumanFormat(files.detectorsProperties.getProperty("defaultCalibration.channelGamma")));
