@@ -31,12 +31,11 @@ public class SimpleCommandDriver implements CommandDriver{
       reader.setInput(port.getIn());
    }
 
-
    public String executeCommand(Command command) throws IOException, InterruptedException{
       enginesLock.lock();
       try{
          if(command.isRecievesInput()){
-            responseReader.startWatchingForInoput();
+            responseReader.startWatchingForInput();
          }
          port.writeToOutput(command.getCommand());
          waitCondition.await(command.getTimeout(), TimeUnit.MILLISECONDS);
@@ -44,7 +43,6 @@ public class SimpleCommandDriver implements CommandDriver{
          contents.rewind();
          int ii;
          for(ii=0; contents.get()!=0; ii++);
-
          if(command.isRecievesInput()){
            return ASCII.decode(ByteBuffer.wrap(contents.array(),0,ii)).toString().trim();
          }else{

@@ -50,7 +50,7 @@ public class TimeoutReader implements ResponseReader{
       this.watchForInput = watchForInput;
    }
 
-   public void startWatchingForInoput() {
+   public void startWatchingForInput() {
       setWatchForInput(true);
    }
 

@@ -36,7 +36,7 @@ public class NewLineReader implements ResponseReader{
       }
    }
 
-   public void startWatchingForInoput() {
+   public void startWatchingForInput() {
 
    }
 

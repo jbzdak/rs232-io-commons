@@ -9,7 +9,7 @@ import java.nio.ByteBuffer;
  */
 public interface ResponseReader {
 
-   public void startWatchingForInoput();
+   public void startWatchingForInput();
 
    public ByteBuffer readInput();
 
