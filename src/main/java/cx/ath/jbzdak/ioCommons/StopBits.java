@@ -1,15 +1,15 @@
-package cx.ath.jbzdak.diesIrae.ioCommons;
+package cx.ath.jbzdak.ioCommons;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 17, 2010
  */
-public enum Parity {
-   NONE(0), ODD(1), EVEN(2), MARK(3), SPACE(4);
+public enum StopBits {
+   ONE_BIT(1), TWO_BITS(2), ONE_AND_HALF(3);
 
    final int contents;
 
-   Parity(int contents) {
+   StopBits(int contents) {
       this.contents = contents;
    }
 

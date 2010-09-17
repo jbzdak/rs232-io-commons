@@ -1,4 +1,4 @@
-package cx.ath.jbzdak.diesIrae.ioCommons;
+package cx.ath.jbzdak.ioCommons;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

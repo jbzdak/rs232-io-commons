@@ -1,4 +1,4 @@
-package cx.ath.jbzdak.diesIrae.ioCommons;
+package cx.ath.jbzdak.ioCommons;
 
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;

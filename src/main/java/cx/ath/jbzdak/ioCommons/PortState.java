@@ -1,4 +1,4 @@
-package cx.ath.jbzdak.diesIrae.ioCommons;
+package cx.ath.jbzdak.ioCommons;
 
 public enum PortState {
 	OPEN, CLOSED, OPENING, CLOSING

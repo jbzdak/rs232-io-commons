@@ -1,4 +1,4 @@
-package cx.ath.jbzdak.diesIrae.ioCommons;
+package cx.ath.jbzdak.ioCommons;
 
 import java.io.IOException;
 import java.util.Timer;
