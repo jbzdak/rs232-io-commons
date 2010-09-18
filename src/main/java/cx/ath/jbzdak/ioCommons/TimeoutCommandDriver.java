@@ -27,7 +27,7 @@ public class TimeoutCommandDriver implements CommandDriver{
 
    TimerTask timeoutTask;
 
-   Future<String> currentCommand;
+   Future<?> currentCommand;
 
    public TimeoutCommandDriver(Port port, ResponseReader reader, int timeout, TimeUnit timeUnit) {
       this.timeout = timeUnit.toMillis(timeout);
@@ -45,10 +45,10 @@ public class TimeoutCommandDriver implements CommandDriver{
    }
 
    @Override
-   public String executeCommand(Command command) throws IOException, InterruptedException {
+   public <T> T executeCommand(Command<T> command) throws IOException, InterruptedException {
       try {
          lock.lock();
-         currentCommand = service.schedule(new CommandCallable(command), 0, TimeUnit.MILLISECONDS);
+         currentCommand = service.schedule(new CommandCallable<T>(command), 0, TimeUnit.MILLISECONDS);
          timeoutTask = new TimeoutTask();
          timeoutTimer.schedule(timeoutTask, timeout);
          condition.await();
@@ -56,7 +56,7 @@ public class TimeoutCommandDriver implements CommandDriver{
             return null;
          }
          try {
-            return currentCommand.get();
+            return (T) currentCommand.get();
          } catch (ExecutionException e) {
             if (e.getCause() instanceof RuntimeException) {
                RuntimeException runtimeException = (RuntimeException) e.getCause();
@@ -70,16 +70,16 @@ public class TimeoutCommandDriver implements CommandDriver{
       }
    }
 
-   class CommandCallable implements Callable<String>{
+   class CommandCallable<T> implements Callable<T>{
 
-      final Command command;
+      final Command<T> command;
 
-      public CommandCallable(Command command) {
+      public CommandCallable(Command<T> command) {
          this.command = command;
       }
 
       @Override
-      public String call() throws Exception {
+      public T call() throws Exception {
          try{
             return driver.executeCommand(command);
          }finally {

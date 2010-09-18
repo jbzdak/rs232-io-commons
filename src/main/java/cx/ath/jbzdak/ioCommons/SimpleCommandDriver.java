@@ -21,21 +21,38 @@ public class SimpleCommandDriver implements CommandDriver{
 
    private final ResponseReader responseReader;
 
+   private final ResponseReader responseReaderForNoInput;
+
    private final ReentrantLock enginesLock = new ReentrantLock(false);
 
    private final Condition waitCondition = enginesLock.newCondition();
 
    public SimpleCommandDriver(Port port, ResponseReader reader) {
-      this.port = port;
-      responseReader = reader;
-      reader.setInput(port.getIn());
+      this(port, reader, null);
    }
 
-   public String executeCommand(Command command) throws IOException, InterruptedException{
+   public SimpleCommandDriver(Port port, ResponseReader responseReader, ResponseReader responseReaderForNoInput) {
+      this.port = port;
+      this.responseReader = responseReader;
+      this.responseReaderForNoInput = responseReaderForNoInput;
+   }
+
+   private ResponseReader getApplicableReader(Command<?> command){
+      if (command.hasCustomResponseReader()){
+         return  command.getCustomResponseReader(port.getIn());
+      }
+      if (!command.isRecievesInput()){
+         return responseReaderForNoInput;
+      }
+      return responseReader;
+   }
+
+   public <T> T executeCommand(Command<T> command) throws IOException, InterruptedException{
       enginesLock.lock();
       try{
-         if(command.isRecievesInput()){
-            responseReader.startWatchingForInput();
+         ResponseReader reader = getApplicableReader(command);
+         if(reader != null){
+            reader.startWatchingForInput();
          }
          port.writeToOutput(command.getCommand());
          waitCondition.await(command.getTimeout(), TimeUnit.MILLISECONDS);
@@ -43,8 +60,9 @@ public class SimpleCommandDriver implements CommandDriver{
          contents.rewind();
          int ii;
          for(ii=0; contents.get()!=0; ii++);
-         if(command.isRecievesInput()){
-           return ASCII.decode(ByteBuffer.wrap(contents.array(),0,ii)).toString().trim();
+         if(reader != null){
+            String res = ASCII.decode(ByteBuffer.wrap(contents.array(),0,ii)).toString().trim();
+            return command.pareseResult(res);
          }else{
             return null;
          }

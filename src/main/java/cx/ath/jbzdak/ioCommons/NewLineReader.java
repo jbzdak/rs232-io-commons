@@ -24,7 +24,7 @@ public class NewLineReader implements ResponseReader{
    }
 
    @Override
-   public void setInput(InputStream input) {
+   public void holdInputStream(InputStream input) {
       inputStream = input;
    }
 

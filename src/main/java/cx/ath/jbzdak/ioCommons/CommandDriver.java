@@ -8,7 +8,7 @@ import java.io.IOException;
  */
 public interface CommandDriver {
 
-   public String executeCommand(Command command) throws IOException, InterruptedException;
+   public <T> T executeCommand(Command<T> command) throws IOException, InterruptedException;
 
    public void dispose();
 }
