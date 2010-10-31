@@ -23,8 +23,7 @@ public class NewLineReader implements ResponseReader{
       this.eolChar = eolChar;
    }
 
-   @Override
-   public void holdInputStream(InputStream input) {
+   public void setInput(InputStream input) {
       inputStream = input;
    }
 
