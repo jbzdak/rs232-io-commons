@@ -54,9 +54,13 @@ public class SimpleCommandDriver implements CommandDriver{
          ResponseReader reader = getApplicableReader(command);
          if(reader != null){
             reader.startWatchingForInput();
+            reader.setInput(port.getIn());
          }
          port.writeToOutput(command.getCommand());
          waitCondition.await(command.getTimeout(), TimeUnit.MILLISECONDS);
+         if(reader == null){
+            return null;
+         }
          ByteBuffer contents= responseReader.readInput();
          contents.rewind();
          int ii;
