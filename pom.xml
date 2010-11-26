@@ -31,7 +31,7 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>edu.umd.cs.findbugs</groupId>
+         <groupId>cx.ath.jbzdak.external.findbugs</groupId>
          <artifactId>annotations</artifactId>
          <version>1.3.9</version>
       </dependency>
@@ -54,8 +54,19 @@
    <repositories>
       <repository>
          <id>skimble-public</id>
-         <url>http://skimbleshanks.ath.cx/maven2/</url>
+         <url>http://skimbleshanks.ath.cx/archiva/repository/public/</url>
          <!-- Publiczne repozytorium autora -->
       </repository>
    </repositories>
+
+
+    <distributionManagement>
+       <repository>
+          <name>Jbzdak repo</name>
+          <id>archiva-skimble</id>
+          <url>http://skimbleshanks.ath.cx/archiva/repository/public/</url>
+       </repository>
+  
+    </distributionManagement>
+    
 </project>
