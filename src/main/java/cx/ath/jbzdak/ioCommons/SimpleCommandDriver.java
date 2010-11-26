@@ -4,6 +4,7 @@ import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
@@ -47,15 +48,19 @@ public class SimpleCommandDriver implements CommandDriver{
       return responseReader;
    }
 
-   public <T> T executeCommand(Command<T> command) throws IOException, InterruptedException{
+    public <T> T executeCommand(Command<T> command) throws IOException, InterruptedException{
       enginesLock.lock();
       try{
          ResponseReader reader = getApplicableReader(command);
          if(reader != null){
             reader.startWatchingForInput();
+            reader.setInput(port.getIn());
          }
          port.writeToOutput(command.getCommand());
          waitCondition.await(command.getTimeout(), TimeUnit.MILLISECONDS);
+         if(reader == null){
+            return null;
+         }
          ByteBuffer contents= responseReader.readInput();
          contents.rewind();
          int ii;
