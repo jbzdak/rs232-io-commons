@@ -54,8 +54,14 @@
    <repositories>
       <repository>
          <id>skimble-public</id>
-         <url>http://skimbleshanks.ath.cx/maven2/</url>
+         <url>https://skimbleshanks.ath.cx/archiva/ilf-group</url>
          <!-- Publiczne repozytorium autora -->
       </repository>
    </repositories>
+   <distributionManagement>
+      <repository>
+         <id>archiva-skimble</id>
+         <url>https://skimbleshanks.ath.cx/archiva/repositories/ilf</url>
+      </repository>
+   </distributionManagement>
 </project>
