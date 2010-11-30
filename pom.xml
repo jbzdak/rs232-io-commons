@@ -54,14 +54,19 @@
    <repositories>
       <repository>
          <id>skimble-public</id>
-         <url>https://skimbleshanks.ath.cx/archiva/ilf-group</url>
+         <url>https://skimbleshanks.ath.cx/archiva/repository/public/</url>
          <!-- Publiczne repozytorium autora -->
       </repository>
    </repositories>
-   <distributionManagement>
-      <repository>
-         <id>archiva-skimble</id>
-         <url>https://skimbleshanks.ath.cx/archiva/repositories/ilf</url>
-      </repository>
-   </distributionManagement>
+
+
+    <distributionManagement>
+       <repository>
+          <name>Jbzdak repo</name>
+          <id>archiva-skimble</id>
+          <url>http://skimbleshanks.ath.cx/archiva/repository/public/</url>
+       </repository>
+  
+    </distributionManagement>
+    
 </project>
