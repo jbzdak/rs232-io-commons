@@ -31,7 +31,7 @@
          <scope>test</scope>
       </dependency>
       <dependency>
-         <groupId>edu.umd.cs.findbugs</groupId>
+         <groupId>cx.ath.external.findbugs</groupId>
          <artifactId>annotations</artifactId>
          <version>1.3.9</version>
       </dependency>
