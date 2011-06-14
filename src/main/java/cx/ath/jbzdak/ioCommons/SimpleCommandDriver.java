@@ -1,5 +1,8 @@
 package cx.ath.jbzdak.ioCommons;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.annotation.concurrent.ThreadSafe;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -15,6 +18,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 @ThreadSafe
 public class SimpleCommandDriver implements CommandDriver{
+
+   private static final Logger LOGGER = LoggerFactory.getLogger(SimpleCommandDriver.class);
 
    private static final Charset ASCII = Charset.forName("ASCII");
 
@@ -56,21 +61,33 @@ public class SimpleCommandDriver implements CommandDriver{
             reader.startWatchingForInput();
             reader.setInput(port.getIn());
          }
-         port.writeToOutput(command.getCommand());
+         byte[] command_bytes = command.getCommand();
+         if(LOGGER.isDebugEnabled()){
+            LOGGER.debug("Writing command xxx'{}'", ASCII.decode(ByteBuffer.wrap(command_bytes)));
+         }
+         port.writeToOutput(command_bytes);
+//         LOGGER.debug("AFTER WRITE");
          waitCondition.await(command.getTimeout(), TimeUnit.MILLISECONDS);
          if(reader == null){
+//            LOGGER.debug("Command does not take response");
             return null;
          }
-         ByteBuffer contents= responseReader.readInput();
+//         LOGGER.debug("Response reader {}", reader);
+         long wait = 0;
+         if(LOGGER.isDebugEnabled()){
+            wait = System.currentTimeMillis();
+         }
+         ByteBuffer contents= reader.readInput();
          contents.rewind();
+         if(LOGGER.isDebugEnabled()){
+            wait = wait - System.currentTimeMillis();
+//            LOGGER.debug("Waited {}ms for resultsFromPort", wait);
+         }
          int ii;
          for(ii=0; contents.get()!=0; ii++);
-         if(reader != null){
-            String res = ASCII.decode(ByteBuffer.wrap(contents.array(),0,ii)).toString().trim();
-            return command.pareseResult(res);
-         }else{
-            return null;
-         }
+         String res = ASCII.decode(ByteBuffer.wrap(contents.array(),0,ii)).toString().trim();
+         LOGGER.debug("Read response {} ", res);
+         return command.pareseResult(res);
       }finally {
          enginesLock.unlock();
       }

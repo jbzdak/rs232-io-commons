@@ -14,6 +14,11 @@ import java.nio.charset.Charset;
 import java.util.EnumSet;
 import java.util.Properties;
 
+/**
+ * Class that encapsulates RS232 port. For now we use rxtx librabry, but we might use other library in future.
+ *
+ *
+ */
 public class Port {
 
    private static final Logger ENGINE_LOGGER = LoggerFactory.getLogger(Port.class);
@@ -24,6 +29,8 @@ public class Port {
    private final InputStream in;
    private volatile PortState state = PortState.CLOSED;
 
+
+
    private static CommPortIdentifier makeIdentifier(String portName){
       try{
          return CommPortIdentifier.getPortIdentifier(portName);
@@ -32,6 +39,13 @@ public class Port {
       }
    }
 
+   /**
+    *
+    * @param portName name of port eg. COM1
+    * @param properties port properties. example properties in /test/resources/example-port.properties.
+    * See also {@link #Port(gnu.io.CommPortIdentifier, int, int, int, int, java.util.EnumSet)}
+    * @return initialized port
+    */
    public static Port makeDriver(String portName, Properties properties){
       try {
          int baudRate = Integer.parseInt(properties.getProperty("baudRate"));

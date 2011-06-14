@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
+ * Something that reads command contenst from port input stream
  * @author Jacek Bzdak jbzdak@gmail.com
  *         Date: Jan 17, 2010
  */
