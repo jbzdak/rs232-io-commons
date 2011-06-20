@@ -10,6 +10,7 @@
     <version>3.0.0</version>
     <modules>
         <module>io-commons-api</module>
+        <module>rxtx-port</module>
     </modules>
 
     <build>

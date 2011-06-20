@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 import java.util.EnumSet;
 import java.util.Properties;
 
-public class Port {
+public abstract class Port {
 
    private static final Logger ENGINE_LOGGER = LoggerFactory.getLogger(Port.class);
 
