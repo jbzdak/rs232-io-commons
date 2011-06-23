@@ -18,9 +18,12 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.ath.jbzdak.linux.serial.jna.bindings;
+package cx.ath.jbzdak.ioCommons.termios;
 
 import cx.ath.jbzdak.ioCommons.*;
+import cx.ath.jbzdak.linux.serial.jna.bindings.NativeException;
+import cx.ath.jbzdak.linux.serial.jna.bindings.TermiosEntryPoint;
+import cx.ath.jbzdak.linux.serial.jna.bindings.TermiosWrapper;
 import cx.ath.jbzdak.linux.serial.jna.bindings.config.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -173,7 +176,7 @@ class TerminosConfigWrapper {
    }
 
    /**
-    * Controlls when internal read function {@link Termios#read(int, byte[], int) will return}. It will return after
+    * Controlls when internal read function {@link cx.ath.jbzdak.linux.serial.jna.bindings.Termios#read(int, byte[], int) will return}. It will return after
     * reading <code>vmin</code> chars. Use this if you can asses length of incomming mesages (eg. they are all 20 bytes),
     * so read will wait until 20 characters are read (or timeout defined in {@link #setVtime(int) has passed}.
     *
@@ -190,7 +193,7 @@ class TerminosConfigWrapper {
 
    /**
     *
-    * Controlls when internal read function {@link Termios#read(int, byte[], int) will return}. It will return after
+    * Controlls when internal read function {@link cx.ath.jbzdak.linux.serial.jna.bindings.Termios#read(int, byte[], int) will return}. It will return after
     * reading <code>vmin</code> chars. It will return either when more than vtime tenths of seconds passes after last
     * reclieved byte.
     *

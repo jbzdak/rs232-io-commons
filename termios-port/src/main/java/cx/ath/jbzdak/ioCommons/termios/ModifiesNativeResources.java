@@ -18,7 +18,7 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.ath.jbzdak.linux.serial.jna.bindings;
+package cx.ath.jbzdak.ioCommons.termios;
 
 /**
  * Created by: Jacek Bzdak

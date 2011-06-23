@@ -2,18 +2,14 @@ package cx.ath.jbzdak.linux.serial.jna.bindings;
 
 import cx.ath.jbzdak.ioCommons.AbstractConfigurablePort;
 import cx.ath.jbzdak.ioCommons.BlockingStrategy;
-import cx.ath.jbzdak.ioCommons.Port;
-import junit.framework.AssertionFailedError;
+import cx.ath.jbzdak.ioCommons.termios.TermiosPortFactory;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.RandomStringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 /**

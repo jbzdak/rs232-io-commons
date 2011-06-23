@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
@@ -101,7 +102,7 @@ public class IoCommonsEntryPoint {
          Constructor constructor = clazz.getConstructor();
          boolean isAccessible = constructor.isAccessible();
          constructor.setAccessible(true);
-         Object newInstance = clazz.newInstance();
+         Object newInstance = constructor.newInstance();
          PortFactory newFactory = PortFactory.class.cast(newInstance);
          registerTo.put(newFactory.getProviderName(), newFactory);
          constructor.setAccessible(isAccessible);
@@ -114,6 +115,8 @@ public class IoCommonsEntryPoint {
          handlePortFactoryException(e, tokenName);
       } catch (NoSuchMethodException e) {
          handlePortFactoryException(e, tokenName);
+      } catch (InvocationTargetException e) {
+         handlePortFactoryException(e, tokenName);
       }
       return null;
    }
@@ -121,6 +124,14 @@ public class IoCommonsEntryPoint {
    private static void handlePortFactoryException(Exception e, String tokenName){
       LOGGER.error("Couldnt initialize portFactories from class '{}', exception reclieved", tokenName);
       LOGGER.error("Exception.", e);
+   }
+
+   @Deprecated
+   /**
+    * Used for testing purposes only. Most probably will not work in the way intended in multithread enviorment!
+    */
+   static void reset(){
+      ENTRY_POINT = null;
    }
 
 

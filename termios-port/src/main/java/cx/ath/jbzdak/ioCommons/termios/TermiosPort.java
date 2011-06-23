@@ -18,17 +18,19 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.ath.jbzdak.linux.serial.jna.bindings;
+package cx.ath.jbzdak.ioCommons.termios;
 
 import cx.ath.jbzdak.ioCommons.*;
+import cx.ath.jbzdak.linux.serial.jna.bindings.NativeException;
+import cx.ath.jbzdak.linux.serial.jna.bindings.OpenMode;
+import cx.ath.jbzdak.linux.serial.jna.bindings.TermiosEntryPoint;
+import cx.ath.jbzdak.linux.serial.jna.bindings.TermiosWrapper;
 import cx.ath.jbzdak.linux.serial.jna.bindings.config.ConfigFlag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 /**
  * Created by: Jacek Bzdak
@@ -71,7 +73,7 @@ public class TermiosPort extends AbstractConfigurablePort{
    }
 
    /**
-    * Sets open mode for port, ie. flags that are passed to {@link Termios#open(String, int)}.
+    * Sets open mode for port, ie. flags that are passed to {@link cx.ath.jbzdak.linux.serial.jna.bindings.Termios#open(String, int)}.
     * Normally you should not change it, default value is sensible ;)
     * @param openMode open mode,
     */

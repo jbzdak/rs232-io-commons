@@ -1,7 +1,10 @@
-package cx.ath.jbzdak.ioCommons.test;
+package cx.ath.jbzdak.ioCommons;
 
 import cx.ath.jbzdak.ioCommons.IoCommonsEntryPoint;
 import cx.ath.jbzdak.ioCommons.Port;
+import cx.ath.jbzdak.ioCommons.test.Port1;
+import cx.ath.jbzdak.ioCommons.test.Port2;
+import cx.ath.jbzdak.ioCommons.test.PortProvider1;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,6 +25,7 @@ public class TestProviders {
 
    @After
    public void tearDown() throws Exception {
+      IoCommonsEntryPoint.reset();
       PortProvider1.throwInConstructor  = false;
    }
 
@@ -31,11 +35,23 @@ public class TestProviders {
    }
 
    @Test
-   public void testInitializesErrorProvider() throws Exception {
-      PortProvider1.throwInConstructor = true;
+   public void testDefaultProvider() throws Exception {
       Port port = IoCommonsEntryPoint.createPort(getByName("default"));
       Assert.assertTrue(port instanceof Port1);
+   }
 
+   @Test
+   public void testDefaultProviderError() throws Exception {
+      PortProvider1.throwInConstructor = true;
+      Port port = IoCommonsEntryPoint.createPort(getByName("default"));
+      Assert.assertTrue(port instanceof Port2);
+   }
+
+
+   @Test
+   public void testSpecificProvider() throws Exception {
+      Port port = IoCommonsEntryPoint.createPort(getByName("pp2"));
+      Assert.assertTrue(port instanceof Port2);
    }
 }
 

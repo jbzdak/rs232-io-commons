@@ -18,14 +18,25 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.ath.jbzdak.linux.serial.jna.bindings;
+package cx.ath.jbzdak.ioCommons.termios;
 
-import cx.ath.jbzdak.linux.serial.jna.bindings.config.TermiosConfig;
+import cx.ath.jbzdak.ioCommons.PortException;
 
 /**
  * Created by: Jacek Bzdak
  */
-public interface ConfigUpdater {
+public class TermiosPortException extends PortException{
 
-   public void updateConfig(TermiosConfig termiosConfig);
+
+   public TermiosPortException(Throwable cause) {
+      super(cause);
+   }
+
+   public TermiosPortException(String message) {
+      super(message);
+   }
+
+   public TermiosPortException(String message, Throwable cause) {
+      super(message, cause);
+   }
 }

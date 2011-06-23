@@ -34,10 +34,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.ath.jbzdak.linux.serial.jna.bindings;
+package cx.ath.jbzdak.ioCommons.termios;
 
 import cx.ath.jbzdak.common.properties.AbstractExtendedProperties;
-import cx.ath.jbzdak.ioCommons.Port;
 import cx.ath.jbzdak.ioCommons.PortException;
 import cx.ath.jbzdak.ioCommons.PortFactory;
 

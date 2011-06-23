@@ -18,8 +18,9 @@
  *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package cx.ath.jbzdak.linux.serial.jna.bindings;
+package cx.ath.jbzdak.ioCommons.termios;
 
+import cx.ath.jbzdak.linux.serial.jna.bindings.NativeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 /**
- * This class implements input stream that is returned by {@link cx.ath.jbzdak.linux.serial.jna.bindings.TermiosPort#getIn()}.
+ * This class implements input stream that is returned by {@link TermiosPort#getIn()}.
  *
  *
  *
@@ -38,7 +39,7 @@ import java.nio.ByteBuffer;
  * It depends on values passed to {@link TermiosPort#setVmin(int)},  {@link TermiosPort#setVtime(int)} and {@link cx.ath.jbzdak.ioCommons.ConfigurablePort#setBlockingStrategy(cx.ath.jbzdak.ioCommons.BlockingStrategy)}.
  * </p>
  * <p>
- *    Howewer -- the internal {@link Termios#read(int, byte[], int)} method may block itself, if
+ *    Howewer -- the internal {@link cx.ath.jbzdak.linux.serial.jna.bindings.Termios#read(int, byte[], int)} method may block itself, if
  *    {@link TermiosPort#setVmin(int)} and  {@link TermiosPort#setVtime(int)} are set improperly.
  *
  *    Basic workings od these swithes is like that:
