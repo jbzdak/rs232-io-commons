@@ -41,7 +41,7 @@ public class IoCommonsEntryPoint {
 
    private static volatile IoCommonsEntryPoint ENTRY_POINT;
 
-   public static Port createPort(Properties properties) throws PortException {
+   public static Port t(Properties properties) throws PortException {
       if(ENTRY_POINT == null){
          synchronized (IoCommonsEntryPoint.class){
             if(ENTRY_POINT == null){

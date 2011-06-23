@@ -1,0 +1,56 @@
+
+Short description
+=================
+
+This library was developed to ease communitation with various electronic equipement that is accessible via
+RS-232--USB converters.
+
+It's features:
+
+1. Simple api for command -- response pattern (computer sends commands and device sends single response per command).
+2. Api to create port from properties file (all port properties are described in that file).
+3. Mechanism to plug in new port implementations. As of today
+4. Implementation of port communication using termios on linux.
+
+It's downsides:
+
+1. Performance was not a design goal, having clear API and simple implementation was.
+2. It is used with: no parity, 8 data bits, one stop bit, so this setting is tested, other settings are not so tested.
+3. It is a yet new api for ports.
+
+
+Status
+======
+
+RxTx implementation was tested througtfully, termios implementation will be tested in the coming months.
+
+Termios bindings
+================
+
+As of today i couldn't get RxTx library to work on Linux x64 bit using USB converters. Since I didn't got an impression
+that RXTX was actively maintained --- I decided to roll my own solution (and learn termios linux API). Java
+communications api doesn't even have an implementanion for linux x64.
+
+This solution uses JNA to access native linux libraries.
+
+As of today it was tested using loopback usb converter (usb converter that has Rx and Tx cables solded), so it sends
+everything back.
+
+Creating port
+=============
+Example properties are located in io-commons-api/src/test/resources/example.properties.
+
+Load these properties and then pass them to IOCommonsEntryPoint.createPort. For examples see termios/port/src/test
+
+To use all implementations and plugin loadnig mechanism please use io-commons-providers module.
+
+Command api
+===========
+Simple API for command driven equipement. Please see classes CommandDriver, SimpleCommandDriver and Command.
+
+
+
+
+
+
+
