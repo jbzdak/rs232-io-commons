@@ -1,6 +1,24 @@
-package cx.ath.jbzdak.ioCommons;
+/*
+ * Copyright for Jacek Bzdak 2011.
+ *
+ *     This file is part of Serial ioCommons, utility library to do serial
+ *     port communication using native APIs and JNA to bind them to java.
+ *
+ *     Serial ioCommons is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     Serial ioCommons is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Lesser General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-import gnu.io.SerialPort;
+package cx.ath.jbzdak.ioCommons;
 
 /**
  * @author Jacek Bzdak jbzdak@gmail.com
@@ -11,19 +29,11 @@ public enum PortMode {
     * Sets dtr bit {@link gnu.io.SerialPort}. I guess it sets logical 1 to DTR line
     * when port is connected.
     */
-   DTR_ENABLED(){
-      @Override
-      void setMode(SerialPort port) {
-         port.setDTR(true);
-      }},
+   DTR_ENABLED(),
    /**
     * Sets rts bit on {@link gnu.io.SerialPort}. I gues it sets logical 1 before sending. 
     */
-   RTS_ENABLED(){
-      @Override
-      void setMode(SerialPort port) {
-         port.setRTS(true);
-      }};
+   RTS_ENABLED();
 
-   abstract void setMode(SerialPort port);
+
 }

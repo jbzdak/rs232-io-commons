@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright for Jacek Bzdak 2011.
+  ~
+  ~     This file is part of Serial ioCommons, utility library to do serial
+  ~     port communication using native APIs and JNA to bind them to java.
+  ~
+  ~     Serial ioCommons is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU Lesser General Public License as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     Serial ioCommons is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU Lesser General Public License for more details.
+  ~
+  ~     You should have received a copy of the GNU Lesser General Public License
+  ~     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -6,11 +27,17 @@
 
     <groupId>cx.ath.jbzdak</groupId>
     <artifactId>ioCommons</artifactId>
+
+    <name>Serial io commmons</name>
+
+
     <packaging>pom</packaging>
     <version>3.0.0</version>
     <modules>
         <module>io-commons-api</module>
         <module>rxtx-port</module>
+        <module>termios-port</module>
+        <module>io-commons-providers</module>
     </modules>
 
     <build>
@@ -29,11 +56,15 @@
         </pluginManagement>
     </build>
 
-    <repositories>
-   gu    <repository>
-            <id>skimble-public</id>
-            <url>http://skimbleshanks.ath.cx/maven2/</url>
-            <!-- Publiczne repozytorium autora -->
-        </repository>
-    </repositories>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cx.ath.jbzdak.commons</groupId>
+                <artifactId>commons</artifactId>
+                <version>2.0.3</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+
 </project>

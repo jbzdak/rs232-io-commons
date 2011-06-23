@@ -1,164 +1,76 @@
+/*
+ * Copyright for Jacek Bzdak 2011.
+ *
+ *     This file is part of Serial ioCommons, utility library to do serial
+ *     port communication using native APIs and JNA to bind them to java.
+ *
+ *     Serial ioCommons is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU Lesser General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     Serial ioCommons is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU Lesser General Public License for more details.
+ *
+ *     You should have received a copy of the GNU Lesser General Public License
+ *     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cx.ath.jbzdak.ioCommons;
 
-import gnu.io.CommPort;
-import gnu.io.CommPortIdentifier;
-import gnu.io.NoSuchPortException;
-import gnu.io.SerialPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.util.EnumSet;
-import java.util.Properties;
+import java.util.Arrays;
 
+/**
+ * Created by: Jacek Bzdak
+ */
 public abstract class Port {
 
-   private static final Logger ENGINE_LOGGER = LoggerFactory.getLogger(Port.class);
-
-   private final CommPortIdentifier identifier;
-   private final SerialPort port;
-   private final OutputStream out;
-   private final InputStream in;
-   private volatile PortState state = PortState.CLOSED;
-
-   private static CommPortIdentifier makeIdentifier(String portName){
-      try{
-         return CommPortIdentifier.getPortIdentifier(portName);
-      }catch(NoSuchPortException e){
-         throw new RuntimeException(e);
-      }
-   }
-
-   public static Port makeDriver(String portName, Properties properties){
-      try {
-         int baudRate = Integer.parseInt(properties.getProperty("baudRate"));
-         int dataBits = Integer.parseInt(properties.getProperty("dataBits"));
-         StopBits stopBits = StopBits.valueOf(properties.getProperty("stopBits"));
-         String parityStr = properties.getProperty("parity");
-         Parity parity;
-         if(parityStr!=null){
-            parity = Parity.valueOf(parityStr);
-         }else{
-            parity = Parity.NONE;
-         }
-         String modesStr = properties.getProperty("modes");
-         EnumSet<PortMode> modes = EnumSet.noneOf(PortMode.class);
-         if(modesStr!=null){
-            for(String mode : modesStr.split(",")){
-               modes.add(PortMode.valueOf(mode.trim()));
-            }
-         }
-         return new Port(portName, baudRate, dataBits, stopBits, parity, modes);
-      } catch (IllegalArgumentException e) {
-         throw new PortException(e);
-      }
-   }
-
-   public static Port makeDriver(Properties properties){
-      return makeDriver(properties.getProperty("portName"), properties);
-   }
-
-   public Port(String identifier, int baudRate, int dataBits, StopBits stopBits, Parity parity, EnumSet<PortMode> modes) {
-      this(makeIdentifier(identifier), baudRate, dataBits, stopBits, parity, modes);
-   }
-
-   public Port(CommPortIdentifier identifier, int baudRate, int dataBits, StopBits stopBits, Parity parity, EnumSet<PortMode> modes) {
-      this(identifier, baudRate, dataBits, stopBits.getContents(), parity.getContents(), modes);
-   }
-
-   private Port(CommPortIdentifier identifier, int baudRate, int dataBits, int stopBits, int parity, EnumSet<PortMode> modes) {
-      super();
-      this.identifier = identifier;
-      if (identifier == null) {
-         throw new IllegalStateException();
-      }
-      if (identifier.isCurrentlyOwned()) {
-         throw new IllegalPortStateException(
-                 "Port jest w danej chwili obsługiwany przez: '"
-                         + identifier.getCurrentOwner() + "'");
-      }
-      state = PortState.OPENING;
-      try {
-         CommPort commPort = identifier.open(
-                 Port.class.getSimpleName(), 2000);
-         if (!(commPort instanceof SerialPort)) {
-            throw new IllegalPortStateException(
-                    "Nieobsługiwany typ portu! - nie jest to port szeregowy");
-         }
-
-         port = (SerialPort) commPort;
-         for (PortMode mode : modes) {
-            mode.setMode(port);
-         }
-         port.setSerialPortParams(baudRate, dataBits, stopBits, parity);
-         in = port.getInputStream();
-         out = port.getOutputStream();
-      } catch (RuntimeException e) {
-         state = PortState.CLOSED;
-         throw e;
-      } catch (Exception e){
-         state = PortState.CLOSED;
-         throw new RuntimeException(e);
-      }
-      state = PortState.OPEN;
-   }
-
-   public void close() throws Exception {
-      state = PortState.CLOSING;
-      try {
-         port.close();
-      } catch (Exception e) {
-         if (identifier.isCurrentlyOwned()) {
-            state = PortState.OPEN;
-         } else {
-            state = PortState.CLOSED;
-         }
-         throw e;
-      }
-   }
-
-   public void writeToOutput(byte[] data) throws IOException {
-      checkState();
-      if(ENGINE_LOGGER.isTraceEnabled()){
-         ENGINE_LOGGER.trace("OUT: " +  new String(data, Charset.forName("ASCII")));
-      }
-      out.write(data);
-      out.flush();
-   }
+   /**
+    * Default value for dataBits setting ({@value}).
+    */
+   public static final int DEFAULT_DATA_BITS = 8;
 
 
-   public InputStream getIn() {
-      checkState();
-      return in;
-   }
+   private static final Logger LOGGER = LoggerFactory.getLogger(Port.class);
+
+   protected PortState portState = PortState.INITIAL;
+
+   public abstract void open() throws PortException;
+
+   public abstract void close() throws PortException;
+
+   public abstract void writeToOutput(byte[] data) throws IOException;
+
+   public abstract InputStream getIn();
 
    public PortState getState() {
-      return state;
+      return portState;
    }
 
-   private void checkState(){
-      if(!state.equals(PortState.OPEN)){
-         throw new IllegalEngineStateException("Nieprawidłowy stan drivera silników :'" + state + "' oczekiwano że będzie otwarty");
+   protected void checkState(){
+      if(!getState().equals(PortState.OPEN)){
+         throw new IllegalStateException("Illegal port state. Port should be OPEN for following operation. It is: " + getState());
+      }
+   }
+
+   protected void checkState(PortState desiredState){
+      if(!getState().equals(desiredState)){
+         throw new IllegalStateException("Illegal port state. Port should be " + desiredState.name() + " for following operation. It is: " + getState());
       }
    }
 
    public void dispose() {
       try {
-         in.close();
-      } catch (IOException e) {
-         ENGINE_LOGGER.warn("Exception while closing input stream for port {}", identifier);
-         ENGINE_LOGGER.warn("Exception is", e);
+         close();
+      } catch (PortException e) {
+         LOGGER.error("Error while closing serial port ", e);
       }
-      try {
-         out.close();
-      } catch (IOException e) {
-         ENGINE_LOGGER.warn("Exception while closing output stream for port {}", identifier);
-         ENGINE_LOGGER.warn("Exception is", e);
-      }
-      port.close();
    }
-
 }
