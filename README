@@ -49,7 +49,15 @@ Command api
 Simple API for command driven equipement. Please see classes CommandDriver, SimpleCommandDriver and Command.
 
 
+Building
+========
 
+I use maven build system, but (for now) I don't have a public repository for my code, so please download following dependencies (also from github)
+
+* commons --- my common libraries
+* linux-serial-io --- my termios bindings
+
+install them and then install this library.
 
 
 
