@@ -29,7 +29,8 @@ public class NewLineReader implements ResponseReader{
 
    public void dispose() {
       try{
-         inputStream.close();
+         if(inputStream!=null)
+            inputStream.close();
       }catch (IOException e){
          LOGGER.warn("Error while closing input stream",e);
       }
