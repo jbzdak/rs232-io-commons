@@ -30,6 +30,23 @@
 
     <name>Serial io commmons</name>
 
+      <licenses>
+        <license>
+            <name>lgpl v3.0 or later</name>
+            <url>http://www.gnu.org/licenses/></url>
+            <comments>If you really find it usefull we may arrange other licensing :)</comments>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Jacek Bzdak</name>
+            <email>jbzdak@gmail.com</email>
+            <roles>
+                <role>everything</role>
+            </roles>
+        </developer>
+    </developers>
 
     <packaging>pom</packaging>
     <version>3.0.0</version>
@@ -55,6 +72,15 @@
             </plugins>
         </pluginManagement>
     </build>
+
+    <distributionManagement>
+        <!-- use the following if you're not using a snapshot version. -->
+        <repository>
+            <id>ilf-repo-release</id>
+            <name>Release repo on nexus</name>
+            <url>http://lfitj.if.pw.edu.pl/artifactory/public/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
