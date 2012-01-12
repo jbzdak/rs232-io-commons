@@ -61,7 +61,7 @@ public class SimpleCommandDriver implements CommandDriver{
          if(reader == null){
             return null;
          }
-         ByteBuffer contents= responseReader.readInput();
+         ByteBuffer contents= reader.readInput();
          contents.rewind();
          int ii;
          for(ii=0; contents.get()!=0; ii++);
