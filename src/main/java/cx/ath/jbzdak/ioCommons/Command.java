@@ -2,6 +2,11 @@ package cx.ath.jbzdak.ioCommons;
 
 import java.io.InputStream;
 
+
+/**
+ *  Responsible for sending command to device and readint it's response.
+ * @param <T>
+ */
 public abstract class Command<T> {
 
 	private final boolean recievesInput;
@@ -9,6 +14,11 @@ public abstract class Command<T> {
 	private final int timeout;
 
 
+   /**
+    *
+    * @param recievesInput does this command reclieve input. If this is true one needs also to override {@link Command#pareseResult(String)}
+    * @param timeout how much driver should wait initially before sending command and waiting for input.
+    */
    protected Command(boolean recievesInput, int timeout) {
       this.timeout = timeout;
       this.recievesInput = recievesInput;
@@ -28,7 +38,7 @@ public abstract class Command<T> {
       if (recievesInput){
          throw new AbstractMethodError();
       }else{
-         throw new UnsupportedOperationException(); 
+         return null;
       }
    }
 
